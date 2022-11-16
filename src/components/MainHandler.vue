@@ -1,18 +1,18 @@
 <template>
   <div class="box">
     <div class="van-hairline--top title">{{info}}</div>
-<!--    <van-search-->
-<!--        v-model="search_value"-->
-<!--        show-action-->
-<!--        placeholder="请输入搜索关键词"-->
-<!--        @update:modelValue="onSearch()"-->
-<!--        @cancel="onCancel"-->
-<!--    >-->
-<!--      <template #action>-->
-<!--        <van-icon name="scan" v-if="scan2"/>-->
-<!--      </template>-->
-<!--    </van-search>-->
-    <Search/>
+    <van-search
+        v-model="search_value"
+        show-action
+        placeholder="请输入搜索关键词"
+        @update:modelValue="onSearch()"
+        @cancel="onCancel"
+    >
+      <template #action>
+        <van-icon name="scan" v-if="scan2"/>
+      </template>
+    </van-search>
+<!--    <Search/>-->
     <van-dropdown-menu>
       <van-dropdown-item title="IOT Status" v-model="value1" :options="option1" @click="getIOT(value1)"/>
       <van-dropdown-item title="Frame Status" v-model="value2" :options="option2" @click="getFrame(value2)"/>
@@ -83,15 +83,14 @@ export default {
       }
     });
 
-    // const onSearch = ()=>{
-    //
-    //   setTimeout(()=>{
-    //     asset.frameNumber = search_value.value
-    //     asset.iotNumber = search_value.value
-    //     console.log(search_value.value);
-    //     ctx.emit('sift',asset);
-    //   },500);
-    // }
+    const onSearch = ()=>{
+      setTimeout(()=>{
+        asset.frameNumber = search_value.value
+        asset.iotNumber = search_value.value
+        console.log(search_value.value);
+        ctx.emit('sift',asset);
+      },500);
+    }
 
 
 
@@ -121,7 +120,7 @@ export default {
       getFrame,
       getVechicle,
       search_value,
-      // onSearch,
+      onSearch,
     };
   }
 

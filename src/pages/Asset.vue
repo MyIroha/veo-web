@@ -67,9 +67,6 @@ export default {
     }
 
 
-    let onSearch = () =>{
-      console.log()
-    }
 
 
     const onLoad =  () => {
