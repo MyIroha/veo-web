@@ -6,7 +6,6 @@ import {ref} from "vue";
 export const sendCode =  ((value:any)=>{
     // @ts-ignore
     $http.get(`/api/emp/sendCode/${value}`).then(res=>{
-        console.log(res.data.code==1000)
         if(res.data.code==1000){
             Notify({ type: 'success', message: '验证码发送成功' })
             return Promise.resolve(res);
@@ -28,12 +27,11 @@ export const loginByPhone = (value:any,loading:any,route:any)=>{
     }
     // @ts-ignore
     $http.post(`/api/emp/login`,loginFormDTO).then((res:any)=>{
-        console.log(res.data.code == 1000)
-        console.log(res.data)
         if(res.data.code == 1000){
             loading.isTrue=false;
 
             sessionStorage.setItem("token",res.data.data);
+            getAssetFilterItems();
             Notify({ type: 'success', message: "登录成功" });
             route.push({path:"/main/home"});
             return ;
@@ -52,5 +50,63 @@ export const selectAssets =async (value:any,list:any,func:any) =>{
 
     $http.post(`/ast/asset/selectAssets`,value).then((res:any)=>{
         func(list,res.data.data);
+    })
+}
+
+export const getAssetFilterItems = ()=>{
+    $http.get(`/ast/filter/config/`).then((res:any)=>{
+        // value.value=res.data.data;
+        let list = res.data.data;
+        let items = {option1:[],option2:[],option3:[]}
+        // @ts-ignore
+        items.option3 = list.vechileType.map((n)=>{
+            return {text:n.vechicleName,value:n.vechicleId};
+        })
+        // @ts-ignore
+        items.option1 = list.iot.map((n)=>{
+            return {text:n.statusName,value:n.statusId};
+        })
+        // @ts-ignore
+        items.option2 = list.frame1.map((n)=>{
+            return {text:n.statusName,value:n.statusId};
+        })
+        // @ts-ignore
+        sessionStorage.setItem("items",JSON.stringify(items));
+    })
+}
+
+export const getAssetInfo = (id:any)=>{
+    //
+    return new Promise((resolve,reject)=>{
+        $http.get(`/ast/asset//Info/${id}`).then((res:any)=>{
+            resolve(res);
+        }).catch(()=>{
+
+        })
+    })
+}
+
+export const updateAssetInfo = (data:any)=>{
+    return new Promise((resolve,reject)=>{
+        console.log(data)
+        $http.post(`/ast/asset/Info/`,data).then((res:any)=>{
+            resolve(res);
+        }).catch(()=>{
+
+        })
+    })
+}
+
+export const getWoList = async (data:any)=>{
+    return new Promise((resolve,reject) => {
+        $http.post("/wo/wo/getWoList",data).then((res:any)=>{
+            console.log(res)
+            if(res.data.code == 1000){
+
+                resolve(res.data.data) ;
+
+            }
+            reject(res.data.data);
+        });
     })
 }

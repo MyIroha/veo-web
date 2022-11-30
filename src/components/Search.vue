@@ -25,34 +25,19 @@ export default {
   name: "Search",
 
   setup(props,ctx) {
-    let asset=reactive({
-      "frameNumber":"",
-      "iotNumber":"",
-      "vechicleType":{
-        "vechicleId":0
-      },
-      "iotStatus":{
-        "statusId":0
-      },
-      "frameStatus":{
-        "statusId":0
-      },
-      "pageDTO":{
-        "page":1,
-        "count":10,
-        "many":false
-      }
-    });
+
+
+    let search = reactive({search_value:""})
     const route = useRoute();
     const search_value = ref();
     const scan2 = ref(route.meta.scan2);
     const onSearch = ()=>{
-
       setTimeout(()=>{
-        asset.frameNumber = search_value.value
-        asset.iotNumber = search_value.value
-        console.log(search_value.value);
-        ctx.emit('sift',asset);
+        search.search_value = search_value.value
+        // asset.frameNumber = search_value.value
+        // asset.iotNumber = search_value.value
+        // console.log(search_value.value);
+        ctx.emit('sift',search);
       },500);
     }
     return {scan2,onSearch,search_value}

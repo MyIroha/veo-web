@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 192.168.112.128",
+    "dev": "vite --host 10.71.20.100",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },

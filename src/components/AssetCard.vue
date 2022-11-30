@@ -1,15 +1,4 @@
 <template>
-<!--  <van-card-->
-<!--      num="2"-->
-<!--      price="2.00"-->
-<!--      desc="IOT"-->
-<!--      title="Frame"-->
-<!--  >-->
-<!--    <template #tags>-->
-<!--      <van-tag plain type="danger">标签</van-tag>-->
-<!--      <van-tag plain type="danger">标签</van-tag>-->
-<!--    </template>-->
-<!--  </van-card>-->
   <div id="card">
     <div id="card-box">
         <van-space>
@@ -46,7 +35,7 @@
               :rate="100"
               :speed="100"
               :text="info.vechicleType.vechicleName"
-              size="40px"
+              size="50px"
           />
         </div>
       </van-space>
@@ -93,7 +82,8 @@ export default {
 
 }
 .type{
-  margin-left: 90%;
+  position: absolute;
+  right: 10px;
 }
 
 </style>

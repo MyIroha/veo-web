@@ -1,22 +1,11 @@
 <template>
   <div class="box">
     <div class="van-hairline--top title">{{info}}</div>
-    <van-search
-        v-model="search_value"
-        show-action
-        placeholder="请输入搜索关键词"
-        @update:modelValue="onSearch()"
-        @cancel="onCancel"
-    >
-      <template #action>
-        <van-icon name="scan" v-if="scan2"/>
-      </template>
-    </van-search>
-<!--    <Search/>-->
+    <slot/>
     <van-dropdown-menu>
-      <van-dropdown-item title="IOT Status" v-model="value1" :options="option1" @click="getIOT(value1)"/>
-      <van-dropdown-item title="Frame Status" v-model="value2" :options="option2" @click="getFrame(value2)"/>
-      <van-dropdown-item title="Vechicle type" v-if="isShow" v-model="value3" :options="option3" @click="getVechicle(value3)"/>
+      <van-dropdown-item title="IOT Status" v-model="value1" :options="itemsLiset.option1" @click="getIOT(value1)"/>
+      <van-dropdown-item title="Frame Status" v-model="value2" :options="itemsLiset.option2" @click="getFrame(value2)"/>
+      <van-dropdown-item title="Vechicle type" v-if="isShow" v-model="value3" :options="itemsLiset.option3" @click="getVechicle(value3)"/>
     </van-dropdown-menu>
 
 
@@ -30,10 +19,9 @@
 import {reactive, ref} from "vue";
 import {useRoute} from 'vue-router'
 import { defineEmits } from 'vue'
-import Search from "./Search.vue";
+import {getAssetFilterItems} from '../http/requst/requst.ts';
 export default {
   name: "MainHandler",
-  components: {Search},
   props:['info','isShow'],
 
   setup(props, ctx){
@@ -44,69 +32,51 @@ export default {
     const value1 = ref(0);
     const value2 = ref(0);
     const value3 = ref(0);
-    const search_value = ref();
-    const option1 = [
-      { text: 'IOT Status', value: null },
-      { text: 'Offline', value: 1 },
-      { text: 'Normal', value: 3 },
-    ];
-    const option2 = [
-      { text: 'Frame Status', value: null },
-      { text: 'Deployed', value: 2 },
-      { text: 'Priority High', value: 4 },
-    ];
-    const option3 = [
-      { text: 'Vechicle type', value: null },
-      { text: 'VS4', value: 1 },
-      { text: 'VS3 ', value: 2 },
-      { text: 'Comos', value: 3 },
-      { text: 'C9 ', value: 4 },
-      { text: 'US1 ', value: 5 },
-    ];
+    let itemsLiset = reactive({});
+
+
+    const {option1, option2,option3} =[];
+    if(props.info == 'Asset Management'){
+      itemsLiset =  JSON.parse(sessionStorage.getItem("items"));
+      console.log(itemsLiset);
+    }
 
     let asset=reactive({
-      "frameNumber":"",
-      "iotNumber":"",
-      "vechicleType":{
-        "vechicleId":0
-      },
-      "iotStatus":{
-        "statusId":0
-      },
-      "frameStatus":{
-        "statusId":0
-      },
-      "pageDTO":{
-        "page":1,
-        "count":10,
-        "many":false
-      }
+      "vechicleId":0,
+      "iotStatusId":0,
+      "frameStatusId":0,
     });
-
-    const onSearch = ()=>{
-      setTimeout(()=>{
-        asset.frameNumber = search_value.value
-        asset.iotNumber = search_value.value
-        console.log(search_value.value);
-        ctx.emit('sift',asset);
-      },500);
-    }
-
-
-
     const getIOT = (val)=>{
-      asset.iotStatus.statusId=val;
+      if(asset.iotStatusId == val){
+        asset.iotStatusId = 0;
+        ctx.emit('sift',asset);
+        return;
+      }
+      asset.iotStatusId=val;
       ctx.emit('sift',asset);
-      // console.log(val);
+      return;
     }
     const getFrame = (val)=>{
-      asset.frameStatus.statusId=val;
+      if(asset.frameStatusId == val){
+        asset.frameStatusId = 0;
+        ctx.emit('sift',asset);
+        return;
+      }
+      asset.frameStatusId=val;
       // console.log(val);
       ctx.emit('sift',asset);
+      return;
     }
     const getVechicle=(val)=>{
-      asset.vechicleType.vechicleId=val;
+      if(asset.vechicleId == val){
+
+        asset.vechicleId = 0;
+        ctx.emit('sift',asset);
+        return;
+      }
+      asset.vechicleId=val;
       ctx.emit('sift',asset);
+      return;
     }
     return {
       value1,
@@ -119,8 +89,7 @@ export default {
       getIOT,
       getFrame,
       getVechicle,
-      search_value,
-      onSearch,
+      itemsLiset
     };
   }
 

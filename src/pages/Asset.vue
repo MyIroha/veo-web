@@ -1,7 +1,12 @@
 <template>
 <!--  我是asset-->
   <van-sticky>
-    <MainHandler :info="title" :isShow="isShow" :assetinfo="asset" @sift="sift" class="hander"></MainHandler>
+
+    <MainHandler :info="title" :isShow="isShow"
+                 :assetinfo="asset" @sift="sift"
+                 class="hander">
+      <Search @sift="sift" ></Search>
+    </MainHandler>
   </van-sticky>
   <van-empty description="描述文字" v-if="empty">
 <!--    <van-button round type="primary" class="bottom-button">刷新</van-button>-->
@@ -13,27 +18,26 @@
         finished-text="没有更多了"
         @load="onLoad"
     >
-      <AssetCard v-for="(value,index) of list" :key="index" :info="value"></AssetCard>
+       <AssetCard v-for="(value,index) of list" :key="index" :info="value" @click="gotoInfo(value.assetId)"/>
     </van-list>
   </van-pull-refresh>
 
 
 
-<!--    </van-pull-refresh>-->
 </template>
 
 <script >
+import Search from "../components/Search.vue";
 import MainHandler from "../components/MainHandler.vue";
-import ToList from "../components/ToList.vue";
 import AssetCard from "../components/AssetCard.vue"
-import {useRoute} from 'vue-router'
-import {selectAssets} from '../http/requst/requst.ts'
+import {useRoute,useRouter} from 'vue-router'
+import {selectAssets,getAssetFilterItems} from '../http/requst/requst.ts'
 import {reactive, ref} from 'vue'
-import {Toast} from "vant";
 
 export default {
   name: "Asset",
   setup() {
+    const router = useRouter();
     const route = useRoute();
     const list = ref([]);
     const loading = ref(false);
@@ -43,12 +47,17 @@ export default {
     const isShow = ref(route.meta.show);
     const empty = ref(false)
     let asset=reactive({
-      // "vechicleType":{
-      //   "vechicleId":3
-      // },
-      // "iotStatus":{
-      //   "statusId":3
-      // },
+      "frameNumber":"",
+      "iotNumber":"",
+      "vechicleType":{
+        "vechicleId":0
+      },
+      "iotStatus":{
+        "statusId":0
+      },
+      "frameStatus":{
+        "statusId":0
+      },
       "pageDTO":{
         "page":1,
         "count":10,
@@ -56,18 +65,25 @@ export default {
       }
     });
 
-    const sift = (val)=>{
-      list.value = [];
-      asset=val;
-      asset.pageDTO.page=1;
+
+    const gotoInfo = (val)=>{
+      router.push({path:`/main/aseet/assetInfo/${val}`})
       console.log(val);
-      asset.pageDTO.many = false
-      // console.log(...val);
-      onLoad()
     }
 
+    const sift = (val)=>{
+      asset.iotNumber = val.search_value;
+      asset.frameNumber = val.search_value;
+      asset.pageDTO.many=false;
+      asset.pageDTO.page=1;
+      asset.vechicleType.vechicleId = val.vechicleId
+      asset.iotStatus.statusId=val.iotStatusId;
+      asset.frameStatus.statusId=val.frameStatusId;
 
-
+      list.value = [];
+      asset.pageDTO.many = false
+      onLoad()
+    }
 
     const onLoad =  () => {
       loading.value = true;
@@ -134,7 +150,8 @@ export default {
       isShow,
       asset,
       sift,
-      empty
+      empty,
+      gotoInfo
     };
   },
 }

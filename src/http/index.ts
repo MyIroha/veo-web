@@ -2,7 +2,7 @@ import axios from "axios";
 import {Notify} from "vant";
 //axios.create 创建一个axios实例，后续所有实例发送http，都受当前配置约束
 const $http = axios.create({
-    baseURL:'http://192.168.112.128',
+    baseURL:'http://10.71.20.100/',
     timeout:50000,
     headers:{
         // "token":`${sessionStorage.getItem("token")} `

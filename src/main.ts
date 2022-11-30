@@ -18,20 +18,13 @@ import { Lazyload } from 'vant';
 import { Divider } from 'vant';
 import { Space } from 'vant';
 import { Circle } from 'vant';
+import { Col, Row } from 'vant';
+import { ActionSheet } from 'vant';
+import { Dialog } from "vant"
 const app = createApp(App);
-app.use(Lazyload).use(Divider).use(Space).use(Circle).use(List)
-app.use(Sticky);
-app.use(Field);
-app.use(Form);
-app.use(CellGroup);
-app.use(Card);
-app.use(Skeleton);
-app.use(PullRefresh);
-app.use(Search);
-app.use(router);
-app.use(NavBar);
-app.use(Button);
-app.use(Icon)
-app.use(Tabbar);
-app.use(TabbarItem);
+app.use(Dialog).use(Lazyload).use(Divider).use(Space).use(Circle).use(List).use(Col).use(Row)
+    .use(Sticky).use(Field).use(Form).use(CellGroup).use(Card).use(Skeleton)
+    .use(PullRefresh).use(Search).use(router).use(NavBar).use(Button).use(Icon)
+    .use(Tabbar).use(TabbarItem).use(ActionSheet)
+
 app.mount('#app')

@@ -5,6 +5,7 @@ import Inventry from "../pages/Inventry.vue"
 import Repair from "../pages/Repair.vue"
 import Login from "../pages/Login.vue"
 import mainHandler from "../components/MainHandler.vue";
+import AssetDetail from "../pages/detail/AssetDetail.vue";
 import BasicLayOut from "../layouts/BasicLayOut.vue"
 import {Notify} from "vant";
 const history = createWebHashHistory();
@@ -21,6 +22,10 @@ const router =   createRouter({
             component:Login,
             meta:{isShow:false}
 
+        },{
+            path:'/main/aseet/assetInfo/:id',
+            name:'assetInfo',
+            component:AssetDetail
         },{
             path:'/main',
             component:BasicLayOut,

@@ -1,10 +1,13 @@
 <template>
-  <MainHandler :info="title"></MainHandler>
+  <MainHandler :info="title">
+    <Search @sift="sift" ></Search>
+  </MainHandler>
 
 </template>
 
 <script>
 import MainHandler from "../components/MainHandler.vue";
+import Search from "../components/Search.vue";
 import {useRoute} from "vue-router";
 import {ref} from "vue";
 export default {
